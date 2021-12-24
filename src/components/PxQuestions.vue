@@ -1,11 +1,17 @@
 <template>
-  <header>
+  <div>
     <h1> Aqui va el juego </h1>
-  </header>
+    <px-input-player-name/>
+  </div>
 </template>
 
 <script>
+import PxInputPlayerName from './PxInputPlayerName.vue'
+
 export default {
-  name: 'PxQuestions'
+  name: 'PxQuestions',
+  components: {
+    PxInputPlayerName
+  }
 }
 </script>
