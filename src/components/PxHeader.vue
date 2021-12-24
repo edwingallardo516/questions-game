@@ -1,6 +1,6 @@
 <template>
-  <header>
-    <h1> Header </h1>
+  <header class="text-center p-1">
+    <h1> Sofka Challenge </h1>
   </header>
 </template>
 

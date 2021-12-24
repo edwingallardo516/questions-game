@@ -16,6 +16,10 @@ const QuestionSchema = Schema({
         type: String,
         required: [true, 'La categoria es requerida'],
     },
+    level: {
+      type: Number,
+      required: true,
+    }
 })
 
 QuestionSchema.methods.toJSON = function() {
