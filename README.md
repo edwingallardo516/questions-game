@@ -37,6 +37,7 @@ MONGODB_URL = mongodb+srv://edwinpga:12345@cluster0.foj8m.mongodb.net/challenge-
 
 #### 2.4. Ejecución
 Para la ejecución del proyecto se deben ejecutar al mismo tiempo la API y vuejs en diferentes terminales
+
 Terminal 1: 
 ```
 npm run api
