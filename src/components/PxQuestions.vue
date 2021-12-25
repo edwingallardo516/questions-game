@@ -17,7 +17,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="player in history" :key="player">
+            <tr v-for="player in history" :key="player.playerName">
               <td> <b-avatar></b-avatar> {{ player.playerName }} </td>
               <td> {{ player.score }} <b-avatar icon="star-fill" class="align-center"></b-avatar> </td>
             </tr>
@@ -115,6 +115,7 @@ export default {
 
   created(){
     this.playerHistory = {
+      "playerName" : "",
       "score" : 0,
       "correctAnswers" : ["Preguntas respondidas correctamente: "]
     }
@@ -133,11 +134,13 @@ export default {
 
     /* Iniciar juego */
     onSubmit(event) {
+
       event.preventDefault()
       this.organizeQuestionsByLevel()
       this.showLogin = false
       this.chooseQuestion()
       this.mixOptions()
+      this.restartHistory()
       this.showGame = true
       this.playerHistory.playerName = this.playerName;
     },
@@ -229,6 +232,13 @@ export default {
 
     savePlayerHistoryDB(){
       api.postPlayerHistory(this.playerHistory)
+    },
+
+    restartHistory(){
+      this.playerHistory = {
+        "score" : 0,
+        "correctAnswers" : ["Preguntas respondidas correctamente: "]
+      }
     },
 
     /* Alertas */
