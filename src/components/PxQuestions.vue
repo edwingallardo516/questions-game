@@ -12,6 +12,16 @@
     <!-- Juego -->
     <div id="game" v-if="showGame" class="container-fluid p-5 text-center justify-content-between">
       <div>
+        <div id="history">
+          <b-avatar></b-avatar>
+          <span class="p-3">{{ playerName }}</span>
+          <b-icon icon="star-fill" font-scale="1.3" class="mr-3"></b-icon>
+          <span> Puntos: {{ score }}</span>
+
+
+        </div>
+        <b-progress :value="(level-1)*20" variant="success" striped animated></b-progress>
+        <h4 class="mt-2"> {{ question.category }} </h4>
         <h3 class="mb-4"> {{ question.statement }} </h3>
       </div>
       <b-button-group vertical>
@@ -20,9 +30,15 @@
         </b-button>
       </b-button-group>
     </div>
+
+    <!-- Historial del juego -->
+    <div id="history" v-if="showHistory" class="container-fluid p-5 text-center justify-content-between" >
+      <b-list-group>
+        <b-list-group-item v-for="question in playerHistory.correctAnswers" :key="question"> {{ question }}</b-list-group-item>
+      </b-list-group>
+    </div>
   </div>
 </template>
-
 <script>
 
 export default {
@@ -38,13 +54,16 @@ export default {
       score: 0,
       showLogin: true,
       showGame: true,
+      showHistory: true,
       question: {},
       options: [],
+      playerHistory : {},
       questionsLevel1: [],
       questionsLevel2: [],
       questionsLevel3: [],
       questionsLevel4: [],
       questionsLevel5: [],
+      alert : ["¡Correcto!","¡Muy bien!","¡Excelente!","¡Magnífico!","¡Ganaste!"],
     }
   },
   props: {
@@ -55,7 +74,10 @@ export default {
   },
 
   created(){
-
+    this.playerHistory = {
+      "score" : 0,
+      "correctAnswers" : ["Preguntas respondidas correctamente: "]
+    }
   },
 
   methods: {
@@ -107,19 +129,55 @@ export default {
     /* Validar respuesta  */
     clickOption(event) {
       if(event.target.innerText == this.question.correct_answer){
-        console.log("Respuesta correcta")
+        this.correctAlert()
+        this.increaseLevelAndScore()
+        this.savePlayerHistory()
         this.chooseQuestion()
         this.mixOptions()
 
       } else {
-        console.log("respuesta incorrecta")
+        this.wrongAlert()
       }
+    },
 
-      //console.log(this.question)
+    /* Control de puntos, nivel del juego e historial*/
+    increaseLevelAndScore() {
+      this.score += this.level*10
+      this.level += 1
+      if(this.level > 5) this.finishGame()
+    },
+
+    savePlayerHistory(){
+      this.playerHistory.score = this.score;
+      this.playerHistory.correctAnswers.push(this.question.statement)
+
+      console.log(this.playerHistory)
+    },
+
+    finishGame(){
+      this.showGame = false
+      this.showHistory = true
+    },
+
+    /* Alertas */
+    correctAlert() {
+      this.$swal({
+        position: 'center',
+        icon: 'success',
+        title: this.alert[this.level-1],
+        showConfirmButton: false,
+        timer: 1500
+      })
+    },
+
+    wrongAlert() {
+      this.$swal({
+        icon: 'error',
+        title: 'Respuesta equivocada ☹️',
+        showConfirmButton: false,
+        timer: 1500
+      })
     }
-
-
-
   },
 }
 </script>

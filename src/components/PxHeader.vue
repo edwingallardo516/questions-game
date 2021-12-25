@@ -1,6 +1,7 @@
 <template>
   <header class="text-center p-1">
-    <h1> Sofka Challenge </h1>
+    <h2> Sofka Challenge </h2>
+    <h3> Pon aprueba tu conocimiento </h3>
   </header>
 </template>
 
