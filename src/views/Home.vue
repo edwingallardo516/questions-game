@@ -1,6 +1,6 @@
 <template>
   <div>
-    <px-questions v-bind:questions="questions"/>
+    <px-questions v-bind:questions="questions" v-bind:history="history"/>
   </div>
 </template>
 
@@ -17,12 +17,13 @@ export default {
   data() {
     return {
       questions: [],
+      history: []
     }
   },
 
   created() {
-    api.getQuestions()
-      .then((questions) => (this.questions = questions))
+    api.getQuestions().then((questions) => (this.questions = questions))
+    api.getPlayerHistory().then((history) => (this.history = history.reverse()))
   }
 }
 </script>

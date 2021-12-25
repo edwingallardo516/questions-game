@@ -1,10 +1,6 @@
 const { Schema, model } = require('mongoose');
 const HistorySchema = Schema({
-  id_player: {
-    type: String,
-    required: [true, 'La id del jugador es requerida'],
-  },
-  name_player: {
+  playerName: {
       type: String,
       required: [true, 'El nombre del jugador es requerida'],
   },
@@ -12,7 +8,7 @@ const HistorySchema = Schema({
     type: Number,
     required: [true, 'El puntaje es requerido'],
   },
-  correct_answers: {
+  correctAnswers: {
     type: Array,
     required: [true],
   }

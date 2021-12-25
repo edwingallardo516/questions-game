@@ -7,6 +7,23 @@
           <b-form-input id="playerName" v-model="playerName" placeholder="Nombre" required></b-form-input>
         <b-button block type="submit" class="px-5 my-3" variant="outline-success"> Jugar </b-button>
       </b-form>
+      <div>
+        <h4>Historial de partidas </h4>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Jugador</th>
+              <th scope="col">Puntaje</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="player in history" :key="player">
+              <td> <b-avatar></b-avatar> {{ player.playerName }} </td>
+              <td> {{ player.score }} <b-avatar icon="star-fill" class="align-center"></b-avatar> </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Juego -->
@@ -45,19 +62,21 @@
         <tbody>
           <tr>
             <td> <b-avatar></b-avatar> {{playerHistory.playerName}}</td>
-            <td>{{playerHistory.score}}</td>
+            <td> {{playerHistory.score}}</td>
           </tr>
         </tbody>
       </table>
       <b-list-group>
         <b-list-group-item v-for="question in playerHistory.correctAnswers" :key="question"> {{ question }}</b-list-group-item>
       </b-list-group>
-      <b-button class="mt-3" block variant="outline-success" @click="restartGame"> Volver a jugar </b-button>
+      <b-button class="m-3" block variant="outline-success" @click="restartGame"> Volver a jugar </b-button>
+      <b-button class="m-3" block variant="outline-danger" @click="outGame"> Salir </b-button>
     </div>
   </div>
 </template>
-<script>
 
+<script>
+import api from '../api'
 export default {
   name: 'PxQuestions',
 
@@ -70,8 +89,8 @@ export default {
       level: 1,
       score: 0,
       showLogin: true,
-      showGame: true,
-      showHistory: true,
+      showGame: false,
+      showHistory: false,
       question: {},
       options: [],
       playerHistory : {},
@@ -85,6 +104,10 @@ export default {
   },
   props: {
     questions: {
+      type: Array,
+      default: () => [],
+    },
+    history: {
       type: Array,
       default: () => [],
     },
@@ -195,8 +218,17 @@ export default {
       this.outAlert()
     },
 
-    savePlayerHistoryDB(){
+    outGame(){
+      this.level = 1
+      this.score = 0
+      api.getPlayerHistory().then((history) => (this.history = history.reverse()))
+      this.showGame = false
+      this.showHistory = false
+      this.showLogin = true
+    },
 
+    savePlayerHistoryDB(){
+      api.postPlayerHistory(this.playerHistory)
     },
 
     /* Alertas */
