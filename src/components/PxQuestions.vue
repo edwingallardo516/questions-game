@@ -52,6 +52,7 @@
       <b-list-group>
         <b-list-group-item v-for="question in playerHistory.correctAnswers" :key="question"> {{ question }}</b-list-group-item>
       </b-list-group>
+      <b-button class="mt-3" block variant="outline-success" @click="restartGame"> Volver a jugar </b-button>
     </div>
   </div>
 </template>
@@ -108,7 +109,7 @@ export default {
     },
 
     /* Iniciar juego */
-    async onSubmit(event) {
+    onSubmit(event) {
       event.preventDefault()
       this.organizeQuestionsByLevel()
       this.showLogin = false
@@ -154,6 +155,7 @@ export default {
 
       } else {
         this.wrongAlert()
+        this.finishGame()
       }
     },
 
@@ -167,13 +169,25 @@ export default {
     savePlayerHistory(){
       this.playerHistory.score = this.score;
       this.playerHistory.correctAnswers.push(this.question.statement)
-
-      console.log(this.playerHistory)
     },
 
     finishGame(){
       this.showGame = false
       this.showHistory = true
+    },
+
+    restartGame(){
+      this.level = 1
+      this.score = 0
+      this.showLogin = false
+      this.showHistory = false
+      this.playerHistory = {
+        "score" : 0,
+        "correctAnswers" : ["Preguntas respondidas correctamente: "]
+      }
+      this.chooseQuestion()
+      this.mixOptions()
+      this.showGame = true
     },
 
     stopGame(){
