@@ -174,6 +174,7 @@ export default {
     finishGame(){
       this.showGame = false
       this.showHistory = true
+      this.savePlayerHistoryDB()
     },
 
     restartGame(){
@@ -192,6 +193,10 @@ export default {
 
     stopGame(){
       this.outAlert()
+    },
+
+    savePlayerHistoryDB(){
+
     },
 
     /* Alertas */
