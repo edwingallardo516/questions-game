@@ -236,6 +236,7 @@ export default {
 
     restartHistory(){
       this.playerHistory = {
+        "playerName" : this.playerName,
         "score" : 0,
         "correctAnswers" : ["Preguntas respondidas correctamente: "]
       }
