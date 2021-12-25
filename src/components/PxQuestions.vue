@@ -17,22 +17,38 @@
           <span class="p-3">{{ playerName }}</span>
           <b-icon icon="star-fill" font-scale="1.3" class="mr-3"></b-icon>
           <span> Puntos: {{ score }}</span>
-
-
         </div>
         <b-progress :value="(level-1)*20" variant="success" striped animated></b-progress>
         <h4 class="mt-2"> {{ question.category }} </h4>
         <h3 class="mb-4"> {{ question.statement }} </h3>
       </div>
-      <b-button-group vertical>
+      <div class="btn-block">
+        <b-button-group vertical>
         <b-button v-for="option in options" :key="option" variant="outline-secondary" @click="clickOption" >
           {{ option }}
         </b-button>
       </b-button-group>
+      </div>
+      <b-button class="mt-4" block variant="outline-danger" @click="stopGame"> Salir </b-button>
     </div>
 
     <!-- Historial del juego -->
     <div id="history" v-if="showHistory" class="container-fluid p-5 text-center justify-content-between" >
+      <h3>Resumen de tu partida </h3>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Jugador</th>
+            <th scope="col">Puntaje</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td> <b-avatar></b-avatar> {{playerHistory.playerName}}</td>
+            <td>{{playerHistory.score}}</td>
+          </tr>
+        </tbody>
+      </table>
       <b-list-group>
         <b-list-group-item v-for="question in playerHistory.correctAnswers" :key="question"> {{ question }}</b-list-group-item>
       </b-list-group>
@@ -99,6 +115,7 @@ export default {
       this.chooseQuestion()
       this.mixOptions()
       this.showGame = true
+      this.playerHistory.playerName = this.playerName;
     },
 
     /* Escoger pregunta al azar*/
@@ -159,13 +176,17 @@ export default {
       this.showHistory = true
     },
 
+    stopGame(){
+      this.outAlert()
+    },
+
     /* Alertas */
     correctAlert() {
       this.$swal({
         position: 'center',
         icon: 'success',
         title: this.alert[this.level-1],
-        showConfirmButton: false,
+        button: false,
         timer: 1500
       })
     },
@@ -174,8 +195,20 @@ export default {
       this.$swal({
         icon: 'error',
         title: 'Respuesta equivocada ☹️',
-        showConfirmButton: false,
-        timer: 1500
+        button: false,
+        timer: 2000
+      })
+    },
+
+    outAlert() {
+      this.$swal({
+        title: '¿Estás seguro?',
+        icon: 'warning',
+        buttons: ["Cancelar", "Salir"],
+      }).then((result) => {
+        if (result) {
+          this.finishGame()
+        }
       })
     }
   },
