@@ -33,11 +33,16 @@ PORT_API = 8000
 DB_NAME = mongodb
 MONGODB_URL = mongodb+srv://edwinpga:12345@cluster0.foj8m.mongodb.net/challenge-sofka?retryWrites=true&w=majority
 ```
+( *Recuerde guardar los cambios* )
 
 #### 2.4. Ejecución
 Para la ejecución del proyecto se deben ejecutar al mismo tiempo la API y vuejs en diferentes terminales
+Terminal 1: 
 ```
 npm run api
+```
+Terminal 2:
+```
 npm run serve
 ```
 
